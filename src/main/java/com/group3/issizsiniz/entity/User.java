@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Data
@@ -33,6 +34,19 @@ public class User {
 
     @Column(name="resume")
     private String resume;
+
+    @Column(name="phoneNumber")
+    private String phoneNumber;
+
+    @ManyToMany
+    @JoinColumn(name="apply_id", referencedColumnName="Apply_ID")
+    private List<JobPosts> previousApplications;
+
+    @ManyToMany
+    @JoinColumn(name="favorite_id", referencedColumnName = "Favorite_ID")
+    private List<JobPosts> favorites;
+
+
 
     /*@Column(name="createdTime")
     private LocalDateTime createdTime;*/

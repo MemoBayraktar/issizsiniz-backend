@@ -4,15 +4,22 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 @Data
 public class UserRegisterRequests {
+    @NotBlank
     private String name;
-
+    @NotBlank
     private String surname;
-
+    @NotBlank
     private String email;
-
+    @NotBlank
+    @Size(min = 5, message = "Şifre 5 harften uzun olmalıdır.")
     private String password;
+    @NotBlank
+    private String phoneNumber;
 }

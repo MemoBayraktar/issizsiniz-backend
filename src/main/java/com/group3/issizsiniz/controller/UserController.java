@@ -3,8 +3,9 @@ package com.group3.issizsiniz.controller;
 
 import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.service.UserService;
+import com.group3.issizsiniz.service.requests.UserLoginRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
-import com.group3.issizsiniz.service.responses.UserRegisterResponse;
+import com.group3.issizsiniz.service.responses.UserLoginResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/register")
-    public UserRegisterResponse save(@RequestBody UserRegisterRequests user) {
+    public String register(@RequestBody UserRegisterRequests user) {
         return userService.register(user);
+    }
+
+    @PostMapping(value = "/login")
+    public UserLoginResponse login(@RequestBody UserLoginRequests user) {
+        return userService.login(user);
     }
 
 }

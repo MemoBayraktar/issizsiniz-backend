@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,11 +17,18 @@ import java.util.Date;
 public class JobPosts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int post_id;
+    private Long post_id;
     private String title;
     private Date datePosted;
     private String description;
     private String location;
     private String position;
+    private String workType;//hybrid, office, remote
+    private String field;//sektör
+    private String workHours;//full-time, part-time, Intern
+
+    @ManyToMany
+    @JoinColumn(name="user_id", referencedColumnName="ID")
+    private List<User> appliers;
 
 }

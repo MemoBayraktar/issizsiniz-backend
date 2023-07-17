@@ -1,17 +1,20 @@
 package com.group3.issizsiniz.service;
 import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.repository.UserRepository;
+import com.group3.issizsiniz.service.requests.UserLoginRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
-import com.group3.issizsiniz.service.responses.UserRegisterResponse;
+import com.group3.issizsiniz.service.responses.UserLoginResponse;
 import com.group3.issizsiniz.util.UserMapperUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
+
+import static com.group3.issizsiniz.config.SecurityConfig.matchPassword;
 
 
 @Service
@@ -19,8 +22,12 @@ import java.util.List;
 @NoArgsConstructor
 public class UserService {
 
+
+
     @Autowired
     private UserRepository userRepository;
+
+    protected static PasswordEncoder passwordEncoder;
 
 
 
@@ -28,18 +35,35 @@ public class UserService {
 
         return userRepository.findAll();
     }
+    public boolean checkIfMailExists(String email){
+        return userRepository.existsByEmail(email);
 
-    public UserRegisterResponse register(UserRegisterRequests request) {
-        User user = UserMapperUtil.toUser(request);
-        User savedUser = userRepository.save(user);
-        return UserMapperUtil.toUserResponse(savedUser);
+    }
+    public String register(UserRegisterRequests request) {
+        if(!checkIfMailExists(request.getEmail())){
+            User user = UserMapperUtil.toUserForRegister(request);
+            userRepository.save(user);
+            return "Kayıt Başarılı";
+        }
+        else
+            return "Bu mail adresi kullanılmaktadır.";
+
+
     }
 
-    /*public UserRegisterResponse register(){}*/
+    public UserLoginResponse login(UserLoginRequests request)  {
 
+        if(userRepository.existsByEmail(request.getEmail())) {
+            User user = userRepository.findByEmail(request.getEmail());
+            if (matchPassword(request.getPassword(),user.getPassword()) ) {
+                return UserMapperUtil.toUserResponse(user);
+            } else
+                return null;
+        }
+        else
+            return null;
 
-
-
+    }
 
 
 }
