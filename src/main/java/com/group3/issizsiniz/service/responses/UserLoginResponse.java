@@ -29,8 +29,7 @@ public class UserLoginResponse {
 
     private List<JobPosts> favorites;
 
-    public String UserLoginResponse(String error) {
-        return error;
-    }
+    private boolean isLoggedIn;
+
 }
 

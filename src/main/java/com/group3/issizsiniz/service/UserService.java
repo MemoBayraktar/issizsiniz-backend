@@ -53,9 +53,12 @@ public class UserService {
 
     public UserLoginResponse login(UserLoginRequests request)  {
 
-        if(userRepository.existsByEmail(request.getEmail())) {
-            User user = userRepository.findByEmail(request.getEmail());
-            if (matchPassword(request.getPassword(),user.getPassword()) ) {
+
+        User user = userRepository.findByEmail(request.getEmail());
+
+        if(user != null) {
+            Boolean isPwdRight = matchPassword(request.getPassword(),user.getPassword());
+            if (isPwdRight) {
                 return UserMapperUtil.toUserResponse(user);
             } else
                 return null;
