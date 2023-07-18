@@ -2,8 +2,8 @@ package com.group3.issizsiniz.util;
 
 import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
+import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
 import com.group3.issizsiniz.service.responses.UserLoginResponse;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.group3.issizsiniz.config.SecurityConfig.encodePassword;
 
@@ -17,7 +17,7 @@ public class UserMapperUtil {
         user.setName(userRegisterRequest.getName());
         user.setSurname(userRegisterRequest.getSurname());
         user.setEmail(userRegisterRequest.getEmail());
-        user.setPassword(userRegisterRequest.getPassword());
+        //user.setPassword(userRegisterRequest.getPassword());
 
         user.setPassword(encodePassword(userRegisterRequest.getPassword()));
         user.setPhoneNumber(userRegisterRequest.getPhoneNumber());
@@ -38,4 +38,9 @@ public class UserMapperUtil {
 
         return userLoginResponse;
     }
+    public static User forUpdateResume(UserResumeSaveRequests saveRequest, User existUser) {
+        existUser.setResume(saveRequest.getResume());
+        return existUser;
+    }
+
 }

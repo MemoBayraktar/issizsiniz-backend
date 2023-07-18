@@ -5,6 +5,7 @@ import com.group3.issizsiniz.exception.LoginFailedException;
 import com.group3.issizsiniz.repository.UserRepository;
 import com.group3.issizsiniz.service.requests.UserLoginRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
+import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
 import com.group3.issizsiniz.service.responses.UserLoginResponse;
 import com.group3.issizsiniz.util.UserMapperUtil;
 import lombok.AllArgsConstructor;
@@ -70,6 +71,20 @@ public class UserService {
             throw new LoginFailedException("Invalid Password");
 
     }
+
+    public  UserLoginResponse updateResume(UserResumeSaveRequests saveRequest, String email) {
+        User byEmail = userRepository.findByEmail(email);
+
+
+
+        User user = UserMapperUtil.forUpdateResume(saveRequest, byEmail);
+
+        userRepository.save(user);
+
+        return UserMapperUtil.toUserResponse(user);
+    }
+
+
 
 
 }

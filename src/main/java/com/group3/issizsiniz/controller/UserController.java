@@ -5,6 +5,7 @@ import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.service.UserService;
 import com.group3.issizsiniz.service.requests.UserLoginRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
+import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
 import com.group3.issizsiniz.service.responses.UserLoginResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -35,6 +35,11 @@ public class UserController {
     @PostMapping(value = "/login")
     public UserLoginResponse login(@RequestBody UserLoginRequests user) {
         return userService.login(user);
+    }
+
+    @PostMapping(value = "/update")
+    public UserLoginResponse update(@RequestBody UserResumeSaveRequests request, @RequestBody String email) {
+        return userService.updateResume(request, email);
     }
 
 }
