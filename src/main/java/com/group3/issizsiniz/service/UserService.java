@@ -1,5 +1,7 @@
 package com.group3.issizsiniz.service;
 import com.group3.issizsiniz.entity.User;
+import com.group3.issizsiniz.exception.InvalidRegisterException;
+import com.group3.issizsiniz.exception.LoginFailedException;
 import com.group3.issizsiniz.repository.UserRepository;
 import com.group3.issizsiniz.service.requests.UserLoginRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
@@ -46,7 +48,8 @@ public class UserService {
             return "Kayıt Başarılı";
         }
         else
-            return "Bu mail adresi kullanılmaktadır.";
+            throw new InvalidRegisterException("Invalid register input");
+
 
 
     }
@@ -61,10 +64,10 @@ public class UserService {
             if (isPwdRight) {
                 return UserMapperUtil.toUserResponse(user);
             } else
-                return null;
+                throw new LoginFailedException("Invalid Email");
         }
         else
-            return null;
+            throw new LoginFailedException("Invalid Password");
 
     }
 

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,21 +22,26 @@ public class User {
     private Long id;
 
     @Column(name ="name")
+    @NotBlank
     private String name;
 
     @Column(name ="surname")
+    @NotBlank
     private String surname;
 
     @Column(name="email")
+    @NotBlank
     private String email;
 
     @Column(name="password")
+    @NotBlank
     private String password;
 
     @Column(name="resume")
     private String resume;
 
     @Column(name="phoneNumber")
+    @NotBlank
     private String phoneNumber;
 
     @ManyToMany
