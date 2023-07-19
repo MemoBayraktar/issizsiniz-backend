@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.group3.issizsiniz.config.SecurityConfig.matchPassword;
 
@@ -43,7 +44,18 @@ public class UserService {
 
     }
     public String register(UserRegisterRequests request) {
-        if(!checkIfMailExists(request.getEmail())){
+        String mailAddress = request.getEmail();
+        String regexPattern = "[^-]^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)@"+ "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)(\\.[A-Za-z]{2,})$";;
+        boolean patternMatches = Pattern.compile(regexPattern).matcher(mailAddress).matches();
+        if (!checkIfMailExists(mailAddress) && patternMatches) {
+            User user = UserMapperUtil.toUserForRegister(request);
+            userRepository.save(user);
+            return "Kayıt Başarılı";
+        } else
+            throw new InvalidRegisterException("Invalid register input");
+    }
+
+      /*  if(!checkIfMailExists(request.getEmail())){
             User user = UserMapperUtil.toUserForRegister(request);
             userRepository.save(user);
             return "Kayıt Başarılı";
@@ -53,7 +65,7 @@ public class UserService {
 
 
 
-    }
+    }*/
 
     public UserResponse login(UserLoginRequests request)  {
 
