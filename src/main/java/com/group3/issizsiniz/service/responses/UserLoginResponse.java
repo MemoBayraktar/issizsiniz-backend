@@ -23,8 +23,6 @@ public class UserLoginResponse {
 
     private String email;
 
-    private String phoneNumber;
-
     private List<JobPosts> previousApplications;
 
     private List<JobPosts> favorites;

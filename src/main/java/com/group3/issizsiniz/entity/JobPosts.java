@@ -27,8 +27,4 @@ public class JobPosts {
     private String field;//sektör
     private String workHours;//full-time, part-time, Intern
 
-    @ManyToMany
-    @JoinColumn(name="user_id", referencedColumnName="ID")
-    private List<User> appliers;
-
 }

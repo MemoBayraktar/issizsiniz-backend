@@ -40,10 +40,6 @@ public class User {
     @Column(name="resume")
     private String resume;
 
-    @Column(name="phoneNumber")
-    @NotBlank
-    private String phoneNumber;
-
     @ManyToMany
     @JoinColumn(name="apply_id", referencedColumnName="Apply_ID")
     private List<JobPosts> previousApplications;

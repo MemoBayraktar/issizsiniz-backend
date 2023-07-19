@@ -3,6 +3,7 @@ package com.group3.issizsiniz.controller;
 
 import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.service.UserService;
+import com.group3.issizsiniz.service.requests.UserFavoriteRequests;
 import com.group3.issizsiniz.service.requests.UserLoginRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
 import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
@@ -38,8 +39,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/update")
-    public UserLoginResponse update(@RequestBody UserResumeSaveRequests request, @RequestBody String email) {
+    public UserLoginResponse updateResume(@RequestBody UserResumeSaveRequests request, @RequestParam String email) {
         return userService.updateResume(request, email);
+    }
+
+    @PostMapping(value = "/addFavorites")
+    public UserLoginResponse addFavorites(@RequestBody UserFavoriteRequests request, @RequestParam String email){
+        return userService.addJobPostToFavorites(request, email);
     }
 
 }

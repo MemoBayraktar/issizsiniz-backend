@@ -3,6 +3,7 @@ import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.exception.InvalidRegisterException;
 import com.group3.issizsiniz.exception.LoginFailedException;
 import com.group3.issizsiniz.repository.UserRepository;
+import com.group3.issizsiniz.service.requests.UserFavoriteRequests;
 import com.group3.issizsiniz.service.requests.UserLoginRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
 import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
@@ -65,10 +66,10 @@ public class UserService {
             if (isPwdRight) {
                 return UserMapperUtil.toUserResponse(user);
             } else
-                throw new LoginFailedException("Invalid Email");
+                throw new LoginFailedException("Invalid Password");
         }
         else
-            throw new LoginFailedException("Invalid Password");
+            throw new LoginFailedException("Invalid Email");
 
     }
 
@@ -81,6 +82,15 @@ public class UserService {
 
         userRepository.save(user);
 
+        return UserMapperUtil.toUserResponse(user);
+    }
+
+    public UserLoginResponse addJobPostToFavorites(UserFavoriteRequests favoriteRequests, String email){
+        User byEmail = userRepository.findByEmail(email);
+
+        User user = UserMapperUtil.forUpdateFavorites(favoriteRequests,byEmail);
+
+        userRepository.save(user);
         return UserMapperUtil.toUserResponse(user);
     }
 

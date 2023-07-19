@@ -18,8 +18,7 @@ public class UserRegisterRequests {
     @NotBlank
     private String email;
     @NotBlank
-    @Size(min = 5, message = "Şifre 5 harften uzun olmalıdır.")
+    @Size(min = 6, message = "Şifre 6 harften uzun olmalıdır.")
     private String password;
-    @NotBlank
-    private String phoneNumber;
+
 }
