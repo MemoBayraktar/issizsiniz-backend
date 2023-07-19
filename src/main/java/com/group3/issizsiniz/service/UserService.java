@@ -44,7 +44,7 @@ public class UserService {
     }
     public String register(UserRegisterRequests request) {
         String mailAddress = request.getEmail();
-        String regexPattern = "[^-]^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)@"+ "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)(\\.[A-Za-z]{2,})$";;
+        String regexPattern = "^(.+)@(.+)$";;
         boolean patternMatches = Pattern.compile(regexPattern).matcher(mailAddress).matches();
         if (!checkIfMailExists(mailAddress) && patternMatches) {
             User user = UserMapperUtil.toUserForRegister(request);
