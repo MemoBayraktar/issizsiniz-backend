@@ -2,7 +2,6 @@ package com.group3.issizsiniz.service;
 import com.group3.issizsiniz.entity.JobPosts;
 import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.exception.InvalidRegisterException;
-import com.group3.issizsiniz.exception.LoginFailedException;
 import com.group3.issizsiniz.repository.UserRepository;
 import com.group3.issizsiniz.service.requests.*;
 import com.group3.issizsiniz.service.responses.UserResponse;
@@ -67,7 +66,7 @@ public class UserService {
 
     }*/
 
-    public UserResponse login(UserLoginRequests request)  {
+    public String login(UserLoginRequests request)  {
 
 
         User user = userRepository.findByEmail(request.getEmail());
@@ -75,16 +74,17 @@ public class UserService {
         if(user != null) {
             boolean isPwdRight = matchPassword(request.getPassword(),user.getPassword());
             if (isPwdRight) {
-                return UserMapperUtil.toUserResponse(user);
+                return "Success";
             } else
-                throw new LoginFailedException("Invalid Password");
+                return "Invalid Email or password";
+
         }
         else
-            throw new LoginFailedException("Invalid Email");
+            return "Invalid Email or password";
 
     }
 
-    public UserResponse updateResume(UserResumeSaveRequests saveRequest, String email) {
+    public String updateResume(UserResumeSaveRequests saveRequest, String email) {
         User byEmail = userRepository.findByEmail(email);
 
 
@@ -93,7 +93,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        return UserMapperUtil.toUserResponse(user);
+        return user.getResume();
     }
 
     public UserResponse addJobPostToFavorites(UserAddFavoriteRequests favoriteRequests, String email){
@@ -121,6 +121,11 @@ public class UserService {
     public List<JobPosts> getJobApplicationsByEmail(UserGetPostRequests requests){
         User user = userRepository.findByEmail(requests.getEmail());
         return user.getPreviousApplications();
+    }
+
+    public String getResume(String email){
+        User user = userRepository.findByEmail(email);
+        return user.getResume();
     }
 
 

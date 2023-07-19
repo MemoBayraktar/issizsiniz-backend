@@ -32,12 +32,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public UserResponse login(@RequestBody UserLoginRequests user) {
+    public String login(@RequestBody UserLoginRequests user) {
         return userService.login(user);
     }
 
     @PostMapping(value = "/update")
-    public UserResponse updateResume(@RequestBody UserResumeSaveRequests request, @RequestParam String email) {
+    public String updateResume(@RequestBody UserResumeSaveRequests request, @RequestParam String email) {
         return userService.updateResume(request, email);
     }
 
@@ -60,4 +60,9 @@ public class UserController {
     public List<JobPosts> getPreviousApplications(@RequestBody UserGetPostRequests request){
         return userService.getJobApplicationsByEmail(request);
     }
+    @PostMapping(value = "/getResume")
+    public String getResume(@RequestBody String email){
+        return userService.getResume(email);
+    }
+
 }
