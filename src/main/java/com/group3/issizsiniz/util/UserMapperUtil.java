@@ -2,10 +2,13 @@ package com.group3.issizsiniz.util;
 
 import com.group3.issizsiniz.entity.JobPosts;
 import com.group3.issizsiniz.entity.User;
-import com.group3.issizsiniz.service.requests.UserFavoriteRequests;
+import com.group3.issizsiniz.exception.InvalidApplyException;
+import com.group3.issizsiniz.exception.InvalidRegisterException;
+import com.group3.issizsiniz.service.requests.UserAddFavoriteRequests;
+import com.group3.issizsiniz.service.requests.UserApplyApplicationRequests;
 import com.group3.issizsiniz.service.requests.UserRegisterRequests;
 import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
-import com.group3.issizsiniz.service.responses.UserLoginResponse;
+import com.group3.issizsiniz.service.responses.UserResponse;
 
 import java.util.List;
 
@@ -29,23 +32,23 @@ public class UserMapperUtil {
     }
 
 
-    public static UserLoginResponse toUserResponse(User user) {
-        UserLoginResponse userLoginResponse = new UserLoginResponse();
-        userLoginResponse.setId(user.getId());
-        userLoginResponse.setName(user.getName());
-        userLoginResponse.setSurname(user.getSurname());
-        userLoginResponse.setResume(user.getResume());
-        userLoginResponse.setEmail(user.getEmail());
-        userLoginResponse.setPreviousApplications(user.getPreviousApplications());
-        userLoginResponse.setFavorites(user.getFavorites());
+    public static UserResponse toUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setName(user.getName());
+        userResponse.setSurname(user.getSurname());
+        userResponse.setResume(user.getResume());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setPreviousApplications(user.getPreviousApplications());
+        userResponse.setFavorites(user.getFavorites());
 
-        return userLoginResponse;
+        return userResponse;
     }
     public static User forUpdateResume(UserResumeSaveRequests saveRequest, User existingUser) {
         existingUser.setResume(saveRequest.getResume());
         return existingUser;
     }
-    public static User forUpdateFavorites(UserFavoriteRequests favoriteRequests, User existingUser){
+    public static User forUpdateFavorites(UserAddFavoriteRequests favoriteRequests, User existingUser){
         List<JobPosts> preFavorites = existingUser.getFavorites();
         preFavorites.add(getJobPostById(favoriteRequests.getFavorite()));
         List<JobPosts> newFavorites = preFavorites;
@@ -53,5 +56,45 @@ public class UserMapperUtil {
         return existingUser;
 
     }
+
+  /*  public boolean checkIfAppliedBefore(UserApplyApplicationRequests applicationRequests, User existingUser){
+        List<JobPosts> previousApplications = existingUser.getPreviousApplications();
+
+    }*/
+
+    public static User forUpdateApplications(UserApplyApplicationRequests applicationRequests, User existingUser){
+        JobPosts appliedJob = getJobPostById(applicationRequests.getApplication());
+        Long applyId = applicationRequests.getApplication().getPost_id();
+        List<JobPosts> prePreviousApplications = existingUser.getPreviousApplications();
+        List<JobPosts> preFavorites = existingUser.getFavorites();
+        List<JobPosts> newFavorites;
+        List<JobPosts> newPreviousApplications;
+
+        for (int i= 0; i<prePreviousApplications.size(); i++){
+            if(applyId == prePreviousApplications.get(i).getPost_id()){
+                throw new InvalidApplyException("Already applied");
+            }
+        }
+
+        for (int i = 0; i<preFavorites.size(); i++){ //deleting from Favorite Lists
+            if(applyId == preFavorites.get(i).getPost_id()){
+                prePreviousApplications.add(appliedJob);
+                preFavorites.remove(i);
+                newFavorites = preFavorites;
+                newPreviousApplications = prePreviousApplications;
+                existingUser.setFavorites(newFavorites);
+                existingUser.setPreviousApplications(newPreviousApplications);
+                return existingUser;
+            }
+        }
+
+        prePreviousApplications.add(getJobPostById(applicationRequests.getApplication()));
+        newPreviousApplications = prePreviousApplications;
+        existingUser.setPreviousApplications(newPreviousApplications);
+        return existingUser;
+
+    }
+
+
 
 }

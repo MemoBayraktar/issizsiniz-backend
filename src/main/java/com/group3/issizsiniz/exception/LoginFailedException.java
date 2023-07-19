@@ -4,6 +4,6 @@ public class LoginFailedException extends RuntimeException {
 
 
     public LoginFailedException(String message) {
-        super("Invalid Login");
+        super("Invalid mail or password");
     }
 }

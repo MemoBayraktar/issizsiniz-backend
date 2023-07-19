@@ -5,14 +5,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Getter
 @Setter
 @Data
-public class UserLoginResponse {
+public class UserResponse {
     private Long id;
 
     private String name;

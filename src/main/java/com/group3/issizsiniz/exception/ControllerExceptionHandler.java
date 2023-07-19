@@ -27,7 +27,7 @@ public class ControllerExceptionHandler {
     public ResponseEntity<DefaultExceptionMessage> loginException(LoginFailedException e) {
         DefaultExceptionMessage dex = new DefaultExceptionMessage();
         dex.setCode(HttpStatus.PRECONDITION_FAILED.value());
-        dex.setMessage("Invalid mail or password");
+        dex.setMessage(e.getMessage());
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(dex);
     }
 
@@ -37,8 +37,20 @@ public class ControllerExceptionHandler {
     public ResponseEntity<DefaultExceptionMessage> registerException(InvalidRegisterException e) {
         DefaultExceptionMessage dex = new DefaultExceptionMessage();
         dex.setCode(HttpStatus.PRECONDITION_FAILED.value());
-        dex.setMessage("Invalid register input");
+        dex.setMessage(e.getMessage());
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(dex);
     }
+
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.PRECONDITION_FAILED)
+    @ExceptionHandler(InvalidApplyException.class)
+    public ResponseEntity<DefaultExceptionMessage> registerException(InvalidApplyException e) {
+        DefaultExceptionMessage dex = new DefaultExceptionMessage();
+        dex.setCode(HttpStatus.PRECONDITION_FAILED.value());
+        dex.setMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(dex);
+    }
+
+
 
 }

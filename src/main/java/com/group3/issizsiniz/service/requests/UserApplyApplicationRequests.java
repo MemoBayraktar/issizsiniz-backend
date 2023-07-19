@@ -4,9 +4,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Getter
 @Setter
-@Data
-public class JobPostsRequests {
-    private Long post_id;
+public class UserApplyApplicationRequests {
+    private UserJobPostsRequests application;
+
 }

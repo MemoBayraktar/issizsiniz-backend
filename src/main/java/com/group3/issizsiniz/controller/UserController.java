@@ -1,13 +1,11 @@
 package com.group3.issizsiniz.controller;
 
 
+import com.group3.issizsiniz.entity.JobPosts;
 import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.service.UserService;
-import com.group3.issizsiniz.service.requests.UserFavoriteRequests;
-import com.group3.issizsiniz.service.requests.UserLoginRequests;
-import com.group3.issizsiniz.service.requests.UserRegisterRequests;
-import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
-import com.group3.issizsiniz.service.responses.UserLoginResponse;
+import com.group3.issizsiniz.service.requests.*;
+import com.group3.issizsiniz.service.responses.UserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,18 +32,32 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public UserLoginResponse login(@RequestBody UserLoginRequests user) {
+    public UserResponse login(@RequestBody UserLoginRequests user) {
         return userService.login(user);
     }
 
     @PostMapping(value = "/update")
-    public UserLoginResponse updateResume(@RequestBody UserResumeSaveRequests request, @RequestParam String email) {
+    public UserResponse updateResume(@RequestBody UserResumeSaveRequests request, @RequestParam String email) {
         return userService.updateResume(request, email);
     }
 
     @PostMapping(value = "/addFavorites")
-    public UserLoginResponse addFavorites(@RequestBody UserFavoriteRequests request, @RequestParam String email){
+    public UserResponse addFavorites(@RequestBody UserAddFavoriteRequests request, @RequestParam String email){
         return userService.addJobPostToFavorites(request, email);
     }
 
+    @PostMapping(value = "/applyJob")
+    public UserResponse applyJob(@RequestBody UserApplyApplicationRequests request, @RequestParam String email){
+        return userService.applyJobAdd(request,email);
+    }
+
+    @PostMapping(value = "/getFavorites")
+    public List<JobPosts> getFavorites(@RequestBody UserGetPostRequests request){
+        return userService.getFavoritesByEmail(request);
+    }
+
+    @PostMapping(value = "/getPreviousApplications")
+    public List<JobPosts> getPreviousApplications(@RequestBody UserGetPostRequests request){
+        return userService.getJobApplicationsByEmail(request);
+    }
 }

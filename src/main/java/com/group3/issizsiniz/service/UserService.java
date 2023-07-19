@@ -1,13 +1,11 @@
 package com.group3.issizsiniz.service;
+import com.group3.issizsiniz.entity.JobPosts;
 import com.group3.issizsiniz.entity.User;
 import com.group3.issizsiniz.exception.InvalidRegisterException;
 import com.group3.issizsiniz.exception.LoginFailedException;
 import com.group3.issizsiniz.repository.UserRepository;
-import com.group3.issizsiniz.service.requests.UserFavoriteRequests;
-import com.group3.issizsiniz.service.requests.UserLoginRequests;
-import com.group3.issizsiniz.service.requests.UserRegisterRequests;
-import com.group3.issizsiniz.service.requests.UserResumeSaveRequests;
-import com.group3.issizsiniz.service.responses.UserLoginResponse;
+import com.group3.issizsiniz.service.requests.*;
+import com.group3.issizsiniz.service.responses.UserResponse;
 import com.group3.issizsiniz.util.UserMapperUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -35,6 +33,7 @@ public class UserService {
 
 
 
+
     public List<User> getAll() {
 
         return userRepository.findAll();
@@ -56,13 +55,13 @@ public class UserService {
 
     }
 
-    public UserLoginResponse login(UserLoginRequests request)  {
+    public UserResponse login(UserLoginRequests request)  {
 
 
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user != null) {
-            Boolean isPwdRight = matchPassword(request.getPassword(),user.getPassword());
+            boolean isPwdRight = matchPassword(request.getPassword(),user.getPassword());
             if (isPwdRight) {
                 return UserMapperUtil.toUserResponse(user);
             } else
@@ -73,7 +72,7 @@ public class UserService {
 
     }
 
-    public  UserLoginResponse updateResume(UserResumeSaveRequests saveRequest, String email) {
+    public UserResponse updateResume(UserResumeSaveRequests saveRequest, String email) {
         User byEmail = userRepository.findByEmail(email);
 
 
@@ -85,13 +84,31 @@ public class UserService {
         return UserMapperUtil.toUserResponse(user);
     }
 
-    public UserLoginResponse addJobPostToFavorites(UserFavoriteRequests favoriteRequests, String email){
+    public UserResponse addJobPostToFavorites(UserAddFavoriteRequests favoriteRequests, String email){
         User byEmail = userRepository.findByEmail(email);
 
         User user = UserMapperUtil.forUpdateFavorites(favoriteRequests,byEmail);
 
         userRepository.save(user);
         return UserMapperUtil.toUserResponse(user);
+    }
+
+    public UserResponse applyJobAdd(UserApplyApplicationRequests applicationRequests, String email){
+        User byEmail = userRepository.findByEmail(email);
+        User user = UserMapperUtil.forUpdateApplications(applicationRequests,byEmail);
+        userRepository.save(user);
+        return UserMapperUtil.toUserResponse(user);
+    }
+
+    public List<JobPosts> getFavoritesByEmail(UserGetPostRequests requests){
+        User user = userRepository.findByEmail(requests.getEmail());
+
+        return user.getFavorites();
+    }
+
+    public List<JobPosts> getJobApplicationsByEmail(UserGetPostRequests requests){
+        User user = userRepository.findByEmail(requests.getEmail());
+        return user.getPreviousApplications();
     }
 
 

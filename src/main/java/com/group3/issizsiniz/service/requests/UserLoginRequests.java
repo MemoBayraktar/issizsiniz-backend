@@ -11,8 +11,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UserLoginRequests {
 
-    @NotBlank(message = "E-mail alanı boş bırakılmamalıdır.")
+    @NotBlank(message = "E-mail can't be empty.")
     private String email;
-    @NotBlank(message = "Şifre boş bırakılmamalıdır.")
+    @NotBlank(message = "Password can't be empty.")
     private String password;
 }
