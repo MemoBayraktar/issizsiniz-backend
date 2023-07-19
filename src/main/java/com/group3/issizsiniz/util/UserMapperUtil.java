@@ -32,7 +32,7 @@ public class UserMapperUtil {
     }
 
 
-    public static UserResponse toUserResponse(User user) {
+    public static UserResponse toUserResponse(User user,String message) {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setName(user.getName());
@@ -41,6 +41,7 @@ public class UserMapperUtil {
         userResponse.setEmail(user.getEmail());
         userResponse.setPreviousApplications(user.getPreviousApplications());
         userResponse.setFavorites(user.getFavorites());
+        userResponse.setMessage(message);
 
         return userResponse;
     }

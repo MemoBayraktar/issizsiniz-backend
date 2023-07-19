@@ -25,5 +25,7 @@ public class UserResponse {
 
     private List<JobPosts> favorites;
 
+    private String message;
+
 }
 

@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public String login(@RequestBody UserLoginRequests user) {
+    public UserResponse login(@RequestBody UserLoginRequests user) {
         return userService.login(user);
     }
 
