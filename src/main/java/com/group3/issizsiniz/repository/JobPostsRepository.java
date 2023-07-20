@@ -19,4 +19,12 @@ public interface JobPostsRepository extends JpaRepository<JobPosts, Long> {
             @Param("fieldFilter") String fieldFilter,
             @Param("workHoursFilter") String workHoursFilter
     );
+    @Query("Select j from JobPosts j where j.location like %:filter% or j.position like %:filter% or j.companyName like %:filter%")
+    List<JobPosts> findBySearch(
+            @Param("filter") String filter
+    );
+
+
+
+
 }

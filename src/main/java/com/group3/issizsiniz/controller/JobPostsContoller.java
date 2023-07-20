@@ -5,10 +5,7 @@ import com.group3.issizsiniz.entity.JobPosts;
 import com.group3.issizsiniz.service.JobPostsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,15 @@ public class JobPostsContoller {
                                          @RequestParam(required = false) String fieldFilter,
                                          @RequestParam(required = false) String workHoursFilter) {
         return jobPostsService.filterJobPosts(cityFilter, workTypeFilter, fieldFilter, workHoursFilter);
+    }
+
+    @GetMapping("/search")
+    public List<JobPosts> searchJobPosts(@RequestParam(required = false) String filter){
+        return jobPostsService.searchJobPosts(filter);
+    }
+
+    @GetMapping("/getDescription")
+    public String getDescription(@RequestBody Long post_id){
+        return jobPostsService.getDescription(post_id);
     }
 }
