@@ -51,6 +51,13 @@ public class UserMapperUtil {
     }
     public static User forUpdateFavorites(UserAddFavoriteRequests favoriteRequests, User existingUser){
         List<JobPosts> preFavorites = existingUser.getFavorites();
+        List<JobPosts> prePreviousApplications = existingUser.getPreviousApplications();
+        Long favoriteId = favoriteRequests.getFavorite().getPost_id();
+        for (int i= 0; i<prePreviousApplications.size(); i++){
+            if(favoriteId == prePreviousApplications.get(i).getPost_id()){
+                throw new InvalidApplyException("Already applied.");
+            }
+        }
         preFavorites.add(getJobPostById(favoriteRequests.getFavorite()));
         List<JobPosts> newFavorites = preFavorites;
         existingUser.setFavorites(newFavorites);

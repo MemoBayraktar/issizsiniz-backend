@@ -24,9 +24,9 @@ public class JobPostsService {
         return jobPostsRepository.findAll();
     }
 
-    public List<JobPosts> filterJobPosts(String cityFilter, String workTypeFilter, String fieldFilter, String workHoursFilter) {
+ /*   public List<JobPosts> filterJobPosts(String cityFilter, String workTypeFilter, String fieldFilter, String workHoursFilter) {
         return jobPostsRepository.findByFilters(cityFilter, workTypeFilter, fieldFilter, workHoursFilter);
-    }
+    }*/
 
     public List<JobPosts> searchJobPosts(String filter){
         return jobPostsRepository.findBySearch(filter);
@@ -35,5 +35,9 @@ public class JobPostsService {
     public String getDescription(Long id){
         JobPosts jobPosts = jobPostsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity Not Found"));
         return jobPosts.getDescription();
+    }
+
+    public List<JobPosts> filterMultipleJobPosts(List<String> cityFilter, List<String> workTypeFilter, List<String> fieldFilter, List<String> workHoursFilter) {
+        return jobPostsRepository.findByMultipleFilters(cityFilter, workTypeFilter, fieldFilter, workHoursFilter);
     }
 }

@@ -21,13 +21,13 @@ public class JobPostsContoller {
         return jobPostsService.getAll();
     }
 
-    @GetMapping("/filter")
+ /*   @GetMapping("/filter")
     public List<JobPosts> filterJobPosts(@RequestParam(required = false) String cityFilter,
                                          @RequestParam(required = false) String workTypeFilter,
                                          @RequestParam(required = false) String fieldFilter,
                                          @RequestParam(required = false) String workHoursFilter) {
         return jobPostsService.filterJobPosts(cityFilter, workTypeFilter, fieldFilter, workHoursFilter);
-    }
+    }*/
 
     @GetMapping("/search")
     public List<JobPosts> searchJobPosts(@RequestParam(required = false) String filter){
@@ -37,5 +37,13 @@ public class JobPostsContoller {
     @GetMapping("/getDescription")
     public String getDescription(@RequestBody Long post_id){
         return jobPostsService.getDescription(post_id);
+    }
+
+    @GetMapping("/filterAsList")
+    public List<JobPosts> filterJobPosts(@RequestParam(required = false) List<String> cityFilter,
+                                         @RequestParam(required = false) List<String> workTypeFilter,
+                                         @RequestParam(required = false) List<String> fieldFilter,
+                                         @RequestParam(required = false) List<String> workHoursFilter) {
+        return jobPostsService.filterMultipleJobPosts(cityFilter, workTypeFilter, fieldFilter, workHoursFilter);
     }
 }
